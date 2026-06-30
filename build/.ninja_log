@@ -1,0 +1,9 @@
+# ninja log v6
+75	676	8044072643539789	CMakeFiles/drone_detect.dir/src/tracker.cpp.obj	32d268b7f492db73
+94	1127	8044072643735944	CMakeFiles/drone_detect.dir/src/display_windows.cpp.obj	c90e9010b7565290
+67	1291	8044072643454754	CMakeFiles/drone_detect.dir/src/detector_motion.cpp.obj	ce1c8c5f2b510957
+55	1332	8044072643353215	CMakeFiles/drone_detect.dir/src/main.cpp.obj	36c8e3cb417658ef
+84	2020	8044072643640402	CMakeFiles/drone_detect.dir/src/camera_windows.cpp.obj	67fceb4097cb085a
+2021	2308	8044072662982382	drone_detect.exe	bdee5a5e6be5c272
+54	959	8044075723892082	CMakeFiles/drone_detect.dir/src/detector_motion.cpp.obj	ce1c8c5f2b510957
+47	274	8044075899151402	drone_detect.exe	bdee5a5e6be5c272
