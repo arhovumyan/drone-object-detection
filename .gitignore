@@ -1,0 +1,13 @@
+# Build output
+build/
+build-*/
+*.o
+*.obj
+*.exe
+
+# Model weights (large; regenerate with models/export_drone_model.sh)
+*.pt
+*.onnx
+
+# Python export venv
+.export-venv/

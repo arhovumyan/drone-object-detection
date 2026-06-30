@@ -22,10 +22,14 @@ int main(int argc, char** argv) {
     CameraConfig cam;
     bool headless = false;
     DetectorKind detKind = DetectorKind::Motion;
+    std::string modelPath;       // ONNX model; when set, use the YOLO detector
+    float confThreshold = 0.25f;
 
     for (int i = 1; i < argc; ++i) {
         std::string a = argv[i];
-        auto next = [&](int& dst) { if (i + 1 < argc) dst = std::atoi(argv[++i]); };
+        auto next  = [&](int& dst)   { if (i + 1 < argc) dst = std::atoi(argv[++i]); };
+        auto nextS = [&](std::string& d) { if (i + 1 < argc) d = argv[++i]; };
+        auto nextF = [&](float& dst) { if (i + 1 < argc) dst = std::atof(argv[++i]); };
         if      (a == "--no-builtin") cam.builtInOnly = false;
         else if (a == "--device")     next(cam.deviceIndexOverride);
         else if (a == "--width")      next(cam.requestWidth);
@@ -33,9 +37,14 @@ int main(int argc, char** argv) {
         else if (a == "--flip")       cam.flipVertical = true;
         else if (a == "--headless")   headless = true;
         else if (a == "--yolo")       detKind = DetectorKind::Yolo26;
+        else if (a == "--model")      nextS(modelPath);
+        else if (a == "--conf")       nextF(confThreshold);
         else if (a == "--help") {
             std::cout << "Usage: drone_detect [--no-builtin] [--device N] "
-                         "[--width W] [--height H] [--flip] [--headless] [--yolo]\n";
+                         "[--width W] [--height H] [--flip] [--headless]\n"
+                         "                    [--model model.onnx] [--conf T] [--yolo]\n"
+                         "  --model  ONNX YOLO model (e.g. models/drone_yolo11.onnx)\n"
+                         "  --conf   detection confidence threshold (default 0.25)\n";
             return 0;
         }
     }
@@ -52,7 +61,13 @@ int main(int argc, char** argv) {
     auto camera = CreateCamera(cam);
     if (!camera) { std::cerr << "Camera init failed.\n"; return 1; }
 
-    auto detector = CreateDetector(detKind);
+    std::unique_ptr<IDetector> detector;
+    if (!modelPath.empty()) {
+        detector = CreateOnnxDetector(modelPath, confThreshold);
+        if (!detector) detector = CreateDetector(detKind);  // fall back to motion
+    } else {
+        detector = CreateDetector(detKind);
+    }
     std::cout << "Detector: " << detector->name() << "\n";
 
     auto display = CreateDisplay(headless);

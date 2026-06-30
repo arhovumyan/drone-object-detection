@@ -1,3 +1,0 @@
-C:/Users/aroho/Documents/objectDetection/build/CMakeFiles/drone_detect.dir
-C:/Users/aroho/Documents/objectDetection/build/CMakeFiles/edit_cache.dir
-C:/Users/aroho/Documents/objectDetection/build/CMakeFiles/rebuild_cache.dir

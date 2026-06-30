@@ -1,6 +1,7 @@
 #pragma once
 #include "camera.hpp"
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace dd {
@@ -25,5 +26,11 @@ enum class DetectorKind {
 };
 
 std::unique_ptr<IDetector> CreateDetector(DetectorKind kind);
+
+// ONNX (YOLO) detector. Returns nullptr (after a diagnostic) if the build has
+// no ONNX Runtime support or the model can't be loaded. Implemented in
+// detector_onnx.cpp (real) or detector_onnx_stub.cpp (no-ONNX builds).
+std::unique_ptr<IDetector> CreateOnnxDetector(const std::string& modelPath,
+                                              float confThreshold = 0.25f);
 
 } // namespace dd
